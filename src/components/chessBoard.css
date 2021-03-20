@@ -1,0 +1,33 @@
+.board-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board {
+    align-items: center;
+    margin: 100px;
+    border: 2px solid #000;
+
+}
+
+.board__row {
+    height: 45px;
+    display: flex;
+}
+
+.board__cell {
+    width: 45px;   
+}
+
+.board__cell--white {
+    background-color: antiquewhite;
+}
+
+.board__cell--black {
+    background-color: rgb(129, 81, 19);
+}
+
+.board__cell--occupied {
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
+}
