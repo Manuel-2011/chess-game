@@ -24,14 +24,14 @@ const ChessBoard = (props) => {
         }
         // if there is an oponent's player piece it is a capture movement
         if (targetPiece && targetPiece.player !== selectedPiece.player) {
-            if (!selectedPiece.validCaptureMovement(targetLocation)) {
+            if (!selectedPiece.validCaptureMovement(targetLocation, props.board)) {
                 console.log('Invalid capture movement') // DELETE
                 return
             }
         }
         // if the target cell is empty it is a simple movement
         if (targetPiece === null) {
-            if (!selectedPiece.validMovement(targetLocation)) {
+            if (!selectedPiece.validMovement(targetLocation, props.board)) {
                 console.log('Invalid movement') // DELETE
                 return
             }
