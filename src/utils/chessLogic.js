@@ -72,7 +72,7 @@ export const isCheck = (oponent, board) => {
     // Check if any of the oponent's pieces is threating the king
     let check = false
     oponentPieces.forEach(piece => {
-        if (movementIsValid(oponent, piece, king.location, board)) {
+        if (movementIsValid(oponent, piece, king.location, board).valid) {
             console.log('check by', piece)
             check = true
         }
@@ -87,8 +87,7 @@ export const isCheck = (oponent, board) => {
 export const movementIsValid = (turn, piece, targetLocation, board) => {
     // Check if the piece belongs to the player's turn
     if (piece.player !== turn) {
-        console.log('Cant move oponets pieces')
-        return false
+        return { valid: false, error: "Can't move oponent's pieces!" }
     }
 
     // Check if there is a piece in the target location
@@ -98,26 +97,23 @@ export const movementIsValid = (turn, piece, targetLocation, board) => {
     // if in the target location is a piece from the same player the movement 
     // is invalid
     if (targetPiece && targetPiece.player === piece.player) {
-        console.log('invalid: same player') // DELETE
-        return false
+        return { valid: false, error: 'The cell is occupied' }
     }
     // if there is an oponent's player piece it is a capture movement
     if (targetPiece && targetPiece.player !== piece.player) {
         if (!piece.validCaptureMovement(targetLocation, board)) {
-            console.log('Invalid capture movement') // DELETE
-            return false
+            return { valid: false, error: 'Invalid capture movement' }
         }
     }
     // if the target cell is empty it is a simple movement
     if (targetPiece === null) {
         if (!piece.validMovement(targetLocation, board)) {
-            console.log('Invalid movement') // DELETE
-            return false
+            return { valid: false, error: 'Invalid movement' }
         }
     }
 
     // if movement passes all tests the movement is valid
-    return true
+    return { valid: true }
 }
 
 

@@ -1,4 +1,4 @@
-import { isJumping } from './math'
+import { isJumping } from './chessLogic'
 
 const colors ={
     white: {
@@ -163,7 +163,6 @@ const kingValidMovement = (piece, targetLocation) => {
     const absColumnOffset = Math.abs(targetLocation.column - piece.location.column)
     
     // King moves 1 step in any direction
-    console.log(absRowOffset, absColumnOffset)
     if ((absRowOffset === 1 || absColumnOffset === 1) && absRowOffset + absColumnOffset <= 2) {
         return true
     }
