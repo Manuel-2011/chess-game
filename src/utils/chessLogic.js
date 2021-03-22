@@ -84,7 +84,7 @@ export const isCheck = (oponent, board) => {
 
 
 // Defines wheter the movement is valid or not
-export const movementIsValid = (turn, piece, targetLocation, board) => {
+export const movementIsValid = (turn, piece, targetLocation, board, checkState) => {
     // Check if the piece belongs to the player's turn
     if (piece.player !== turn) {
         return { valid: false, error: "Can't move oponent's pieces!" }
@@ -112,6 +112,19 @@ export const movementIsValid = (turn, piece, targetLocation, board) => {
         }
     }
 
+    // if player is in check the movement must eliminates the check
+    if (checkState=== turn) {
+        // make hypothetical movement
+        const hBoard = makeHypotheticalMove(board, piece, targetLocation)
+
+        // check if movement eliminates the check
+        // if doesn't the movement is invalid
+        const oponent = turn === 'white' ? 'black' : 'white'
+        if (isCheck(oponent, hBoard)) {
+            return { valid: false, error: 'Player is still in check' }
+        }
+    }
+
     // if movement passes all tests the movement is valid
     return { valid: true }
 }
@@ -132,4 +145,16 @@ export const cloneBoard = (board) => {
     })
 
     return clone
+}
+
+// make a hypothetical movement
+const makeHypotheticalMove = (board, piece, targetLocation) => {
+    const hBoard = cloneBoard(board)
+    const clonePiece = hBoard[piece.location.row][piece.location.column]
+    const oldLocation = clonePiece.location
+    clonePiece.location = {row: targetLocation.row, column: targetLocation.column}
+    hBoard[targetLocation.row][targetLocation.column] = clonePiece
+    hBoard[oldLocation.row][oldLocation.column] = null
+
+    return hBoard
 }
