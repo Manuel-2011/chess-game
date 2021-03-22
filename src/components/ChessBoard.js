@@ -12,6 +12,12 @@ const ChessBoard = (props) => {
         ////////////////////////////////////
         // Validation of the movement
 
+        // Check if the piece belongs to the player's turn
+        if (selectedPiece.player !== props.turn) {
+            console.log('Cant move oponets pieces')
+            return
+        }
+
         // Check if there is a piece in the target location
         const targetRow = targetLocation.row
         const targetColumn = targetLocation.column
@@ -82,7 +88,8 @@ const ChessBoard = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        board: state.board
+        board: state.board,
+        turn: state.turn
     }
 }
 
