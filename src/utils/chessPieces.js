@@ -72,8 +72,8 @@ export const knight = (player, row, column) => {
             column,
             row
         },
-        validMovement: () => {},
-        validCaptureMovement: () => {},
+        validMovement(targetLocation) {return knightValidMovement(this, targetLocation)},
+        validCaptureMovement(targetLocation) {return knightValidMovement(this, targetLocation)},
         jump: false,
         history: [],
     }
@@ -113,6 +113,7 @@ export const queen = (player, row, column) => {
     }
 }
 
+//////////////////////////////////////
 // movement validation formulas
 
 const pawnValidMovement = (piece, targetLocation) => {
@@ -223,4 +224,17 @@ const bishopValidMovement = (piece, targetLocation, board) => {
 
     // If the movement passed all the above tests is valid
     return true
+}
+const knightValidMovement = (piece, targetLocation) => {
+    const absRowOffset = Math.abs(targetLocation.row - piece.location.row)
+    const absColumnOffset = Math.abs(targetLocation.column - piece.location.column)
+    // knights moves in L
+    let direction
+    if (absRowOffset === 2 && absColumnOffset === 1) direction = 'verticalL'
+    if (absRowOffset === 1 && absColumnOffset === 2) direction = 'horizontalL'
+    if (direction) {
+        return true
+    }
+
+    return false
 }
