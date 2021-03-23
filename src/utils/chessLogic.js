@@ -158,3 +158,83 @@ const makeHypotheticalMove = (board, piece, targetLocation) => {
 
     return hBoard
 }
+
+export const isCheckMate = (turn, board) => {
+    // find the king of the player
+    let king
+    board.forEach( row => {
+        row.forEach(piece => {
+            if (piece && piece.name === 'king' && piece.player !== turn) {
+                king = piece
+            }
+        })
+    })
+
+    // Find all possible king movements
+    const moves = possibleKingMoves(king)
+    console.log('possible moves', moves)
+
+    // check if there is at least one valid move the king could do
+    for (let i=0 ; i<moves.length; i++) {
+        const validMove = movementIsValid(turn, king, moves[i], board, turn).valid
+        if (validMove) {
+            console.log('valid move', moves[i])
+            return false
+        }
+    }
+
+    return true
+}
+
+export const horizontalMoves = ({ row, column }) => {
+    const moves = []
+    for (let i=0; i < 8; i++) {
+        if ( i !== column) {
+            moves.push({ row, column: i})
+        }
+    }
+    return moves
+}
+
+export const verticalMoves = ({ row, column }) => {
+    const moves = []
+    for (let i=0; i < 8; i++) {
+        if ( i !== row) {
+            moves.push({ row: i, column })
+        }
+    }
+    return moves
+}
+
+export const diagonalMoves = ({ row, column }) => {
+    const moves = []
+
+    // from bottom left to top right diagonal
+    let rowOffset = 0 - row
+    let columnOffset = 0 - column
+    let maxOffset = Math.min(Math.abs(rowOffset), Math.abs(columnOffset))
+    let currentRow = row - maxOffset
+    let currentColumn = column - maxOffset
+    while (currentRow < 8 && currentColumn < 8) {
+        if (currentRow !== row && currentColumn !== column) {
+            moves.push({ row: currentRow , column: currentColumn })
+        }
+        currentRow++
+        currentColumn++
+    }
+    // from bottom right to top left diagonal
+    rowOffset = 0 - row
+    columnOffset = 7 - column
+    maxOffset = Math.min(Math.abs(rowOffset), Math.abs(columnOffset))
+    currentRow = row - maxOffset
+    currentColumn = column + maxOffset
+    while (currentRow < 8 && currentColumn >= 0) {
+        if (currentRow !== row && currentColumn !== column) {
+            moves.push({ row: currentRow , column: currentColumn })
+        }
+        currentRow++
+        currentColumn--
+    }
+
+    return moves
+}

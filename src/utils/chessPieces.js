@@ -1,4 +1,8 @@
-import { isJumping } from './chessLogic'
+import { isJumping, 
+    horizontalMoves, 
+    verticalMoves,
+    diagonalMoves,
+ } from './chessLogic'
 
 const colors ={
     white: {
@@ -236,4 +240,79 @@ const knightValidMovement = (piece, targetLocation) => {
     }
 
     return false
+}
+
+//////////////////////////////////////
+// possible movements
+
+const possibleKingMoves = (king) => {
+    const moves = []
+    for (let i=-1; i <= 1; i++) {
+        for (let j=-1; j <= 1; j++) {
+            const row = king.location.row + i
+            const column = king.location.column + j
+            if (row < 0 || column < 0) {
+                break
+            }
+            if (row > 7 || column > 7) {
+                break
+            }
+            if ((i !== 0 || j !== 0)) {
+                moves.push({ row , column })
+            }
+        }
+    }
+    return moves
+}
+
+const possibleQueenMoves = (piece) => {
+    const horizontal = horizontalMoves(piece.location)
+    const vertical = verticalMoves(piece.location)
+    const diagonals = diagonalMoves(piece.location)
+
+    const moves = horizontal.concat(vertical).concat(diagonals)
+    
+    return moves
+}
+
+const possibleRookMoves = (piece) => {
+    const horizontal = horizontalMoves(piece.location)
+    const vertical = verticalMoves(piece.location)
+
+    const moves = horizontal.concat(vertical)
+    
+    return moves
+}
+
+const possibleBishopMoves = (piece) => {
+    return diagonalMoves(piece.location)
+}
+
+const possiblePawnMoves = (piece) => {
+    const moves = []
+    const column = piece.location.column
+    const row = piece.location.row
+    // one step forward
+    let forward = piece.player === 'white' ? -1 : 1
+    if (row + forward >= 0 && row + forward < 8) {
+        moves.push({ row: row + forward, column})
+
+        // forward diagonals
+        if (column - 1 >= 0) {
+            moves.push({ row: row + forward, column: column - 1})
+        }
+        if (column + 1 < 7) {
+            moves.push({ row: row + forward, column: column + 1})
+        }
+    }
+
+    // If it is the first move pawns can also move two steps forward
+    if (piece.history.length === 0) {
+        forward = piece.player === 'white' ? -2 : 2
+        if (row + forward >= 0 && row + forward < 8) {
+            moves.push({ row: row + forward, column})
+        }
+    }
+    
+    return moves
 }

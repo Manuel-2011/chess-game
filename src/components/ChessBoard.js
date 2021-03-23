@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import './chessBoard.css'
 import Cell from './Cell'
 import { movePiece, check } from '../actions'
-import { isCheck, movementIsValid } from '../utils/chessLogic'
+import { isCheck, movementIsValid, isCheckMate } from '../utils/chessLogic'
 
 const ChessBoard = (props) => {
 
@@ -26,6 +26,11 @@ const ChessBoard = (props) => {
         if (isCheck(oponent, props.board)) {
             console.log('Player is in check')
             props.check(props.turn)
+
+            // Is it a check mate?
+            if (isCheckMate(props.turn, props.board)) {
+                console.log('checkmate!!')
+            }
         }
     }, [props.turn])
 
