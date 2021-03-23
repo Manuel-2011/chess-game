@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import './chessBoard.css'
 import Cell from './Cell'
-import { movePiece, check } from '../actions'
+import { movePiece, check, checkmate } from '../actions'
 import { isCheck, movementIsValid, isCheckMate } from '../utils/chessLogic'
 
 const ChessBoard = (props) => {
@@ -23,13 +23,15 @@ const ChessBoard = (props) => {
     useEffect(() => {
         // Check if there is a check
         const oponent = props.turn === 'white' ? 'black' : 'white'
-        if (isCheck(oponent, props.board)) {
-            console.log('Player is in check')
-            props.check(props.turn)
+        if (isCheck(oponent, props.board).result) {
 
             // Is it a check mate?
             if (isCheckMate(props.turn, props.board)) {
                 console.log('checkmate!!')
+                props.checkmate(props.turn)
+            } else {
+                console.log('Player is in check')
+                props.check(props.turn)
             }
         }
     }, [props.turn])
@@ -82,5 +84,6 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
         movePiece,
-        check
+        check,
+        checkmate
     })(ChessBoard)

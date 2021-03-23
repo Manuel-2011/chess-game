@@ -70,11 +70,10 @@ export const isCheck = (oponent, board) => {
     }, [])
 
     // Check if any of the oponent's pieces is threating the king
-    let check = false
+    let check = { result: false }
     oponentPieces.forEach(piece => {
         if (movementIsValid(oponent, piece, king.location, board).valid) {
-            console.log('check by', piece)
-            check = true
+            check = { result: true, piece}
         }
     })
 
@@ -120,7 +119,7 @@ export const movementIsValid = (turn, piece, targetLocation, board, checkState) 
         // check if movement eliminates the check
         // if doesn't the movement is invalid
         const oponent = turn === 'white' ? 'black' : 'white'
-        if (isCheck(oponent, hBoard)) {
+        if (isCheck(oponent, hBoard).result) {
             return { valid: false, error: 'Player is still in check' }
         }
     }
@@ -160,26 +159,25 @@ const makeHypotheticalMove = (board, piece, targetLocation) => {
 }
 
 export const isCheckMate = (turn, board) => {
-    // find the king of the player
-    let king
-    board.forEach( row => {
-        row.forEach(piece => {
-            if (piece && piece.name === 'king' && piece.player !== turn) {
-                king = piece
-            }
-        })
+    // find all the pieces of the player
+    const pieces = findPlayersPieces(turn, board)
+    // Find all possible movements
+    let moves = []
+    pieces.forEach(piece => {
+        moves = moves.concat(piece.possibleMoves())
     })
 
-    // Find all possible king movements
-    const moves = king.possibleMoves()
-    console.log('possible moves', moves)
-
-    // check if there is at least one valid move the king could do
-    for (let i=0 ; i<moves.length; i++) {
-        const validMove = movementIsValid(turn, king, moves[i], board, turn).valid
-        if (validMove) {
-            console.log('valid move', moves[i])
-            return false
+    // check if there is at least one valid movement
+    // iterate over every piece
+    for (let j=0; j < moves.length; j++) {
+        // iterate over every possible move
+        const possibleMovements = moves[j].moves
+        for (let i=0 ; i< possibleMovements.length; i++) {
+            const validMove = movementIsValid(turn, moves[j].piece, possibleMovements[i], board, turn).valid
+            if (validMove) {
+                console.log('valid move', possibleMovements[i], moves[j].piece)
+                return false
+            }
         }
     }
 
@@ -237,4 +235,17 @@ export const diagonalMoves = ({ row, column }) => {
     }
 
     return moves
+}
+
+const findPlayersPieces = (player, board) => {
+    const pieces = []
+    board.forEach( row => {
+        row.forEach(piece => {
+            if (piece && piece.player === player) {
+                pieces.push(piece)
+            }
+        })
+    })
+
+    return pieces
 }

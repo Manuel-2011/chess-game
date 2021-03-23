@@ -262,7 +262,7 @@ const possibleKingMoves = (piece) => {
             }
         }
     }
-    return moves
+    return { moves, piece }
 }
 
 const possibleQueenMoves = (piece) => {
@@ -272,7 +272,7 @@ const possibleQueenMoves = (piece) => {
 
     const moves = horizontal.concat(vertical).concat(diagonals)
     
-    return moves
+    return { moves, piece }
 }
 
 const possibleRookMoves = (piece) => {
@@ -281,11 +281,12 @@ const possibleRookMoves = (piece) => {
 
     const moves = horizontal.concat(vertical)
     
-    return moves
+    return { moves, piece }
 }
 
 const possibleBishopMoves = (piece) => {
-    return diagonalMoves(piece.location)
+    const moves = diagonalMoves(piece.location)
+    return { moves, piece }
 }
 
 const possiblePawnMoves = (piece) => {
@@ -314,7 +315,7 @@ const possiblePawnMoves = (piece) => {
         }
     }
     
-    return moves
+    return { moves, piece }
 }
 
 const possibleKnightMoves = (piece) => {
@@ -335,5 +336,5 @@ const possibleKnightMoves = (piece) => {
             })
         })
     })
-    return moves
+    return { moves, piece }
 }

@@ -14,3 +14,10 @@ export const check = (player) => {
         payload: player
     }
 }
+
+export const checkmate = (player) => {
+    return {
+        type: 'CHECKMATE',
+        payload: player
+    }
+}
