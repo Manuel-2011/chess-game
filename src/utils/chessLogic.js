@@ -171,7 +171,7 @@ export const isCheckMate = (turn, board) => {
     })
 
     // Find all possible king movements
-    const moves = possibleKingMoves(king)
+    const moves = king.possibleMoves()
     console.log('possible moves', moves)
 
     // check if there is at least one valid move the king could do

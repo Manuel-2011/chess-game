@@ -27,7 +27,7 @@ export const pawn = (player, row, column) => {
         },
         validMovement(targetLocation) {return pawnValidMovement(this, targetLocation)},
         validCaptureMovement(targetLocation) {return pawnValidCaptureMovement(this, targetLocation)},
-        jump: false,
+        possibleMoves() {return possiblePawnMoves(this)},
         history: [],
     }
 }
@@ -44,7 +44,7 @@ export const king = (player, row, column) => {
         },
         validMovement(targetLocation) {return kingValidMovement(this, targetLocation)},
         validCaptureMovement(targetLocation) {return kingValidMovement(this, targetLocation)},
-        jump: false,
+        possibleMoves() {return possibleKingMoves(this)},
         history: [],
     }
 }
@@ -61,7 +61,7 @@ export const rook = (player, row, column) => {
         },
         validMovement(targetLocation, board) {return rookValidMovement(this, targetLocation, board)},
         validCaptureMovement(targetLocation, board) {return rookValidMovement(this, targetLocation, board)},
-        jump: false,
+        possibleMoves() {return possibleRookMoves(this)},
         history: [],
     }
 }
@@ -78,7 +78,7 @@ export const knight = (player, row, column) => {
         },
         validMovement(targetLocation) {return knightValidMovement(this, targetLocation)},
         validCaptureMovement(targetLocation) {return knightValidMovement(this, targetLocation)},
-        jump: false,
+        possibleMoves() {return possibleKnightMoves(this)},
         history: [],
     }
 }
@@ -95,7 +95,7 @@ export const bishop = (player, row, column) => {
         },
         validMovement(targetLocation, board) {return bishopValidMovement(this, targetLocation, board)},
         validCaptureMovement(targetLocation, board) {return bishopValidMovement(this, targetLocation, board)},
-        jump: false,
+        possibleMoves() {return possibleBishopMoves(this)},
         history: [],
     }
 }
@@ -112,7 +112,7 @@ export const queen = (player, row, column) => {
         },
         validMovement(targetLocation, board) {return queenValidMovement(this, targetLocation, board)},
         validCaptureMovement(targetLocation, board) {return queenValidMovement(this, targetLocation, board)},
-        jump: false,
+        possibleMoves() {return possibleQueenMoves(this)},
         history: [],
     }
 }
@@ -245,12 +245,12 @@ const knightValidMovement = (piece, targetLocation) => {
 //////////////////////////////////////
 // possible movements
 
-const possibleKingMoves = (king) => {
+const possibleKingMoves = (piece) => {
     const moves = []
     for (let i=-1; i <= 1; i++) {
         for (let j=-1; j <= 1; j++) {
-            const row = king.location.row + i
-            const column = king.location.column + j
+            const row = piece.location.row + i
+            const column = piece.location.column + j
             if (row < 0 || column < 0) {
                 break
             }
@@ -314,5 +314,26 @@ const possiblePawnMoves = (piece) => {
         }
     }
     
+    return moves
+}
+
+const possibleKnightMoves = (piece) => {
+    const moves = []
+
+    const range = [1, 2]
+    const directions = [1, -1]
+    
+    range.forEach(rowOffset => {
+        directions.forEach(cDirection => {
+            directions.forEach(rDirection => {
+                const columnOffset = rowOffset === 1 ? 2 : 1
+                const column = piece.location.column + columnOffset*cDirection
+                const row = piece.location.row + rowOffset*rDirection
+                if (row >= 0 && row < 8 && column >= 0 && column < 8) {
+                    moves.push({ row, column })
+                }
+            })
+        })
+    })
     return moves
 }
