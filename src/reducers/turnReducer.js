@@ -3,6 +3,10 @@ const turnReducer = (turn = 'white', action) => {
         turn = turn === 'white' ? 'black' : 'white'
     }
 
+    if (action.type === "RESTART") {
+        return 'white'
+    }
+
     return turn
 }
 

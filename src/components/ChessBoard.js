@@ -29,6 +29,7 @@ const ChessBoard = (props) => {
             if (isCheckMate(props.turn, props.board)) {
                 console.log('checkmate!!')
                 props.checkmate(props.turn)
+                props.check(props.turn)
             } else {
                 console.log('Player is in check')
                 props.check(props.turn)

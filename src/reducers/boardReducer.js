@@ -29,6 +29,10 @@ const boardReducer = (board = initialBoard, action) => {
         return finalBoard
     }
 
+    if (action.type === "RESTART") {
+        return initialGame()
+    }
+
     return finalBoard
 }
 

@@ -3,6 +3,10 @@ const checkmateReducer = (player = '', action) => {
         return action.payload
     }
 
+    if (action.type === "RESTART") {
+        return ''
+    }
+
     return player
 }
 

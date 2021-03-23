@@ -21,3 +21,7 @@ export const checkmate = (player) => {
         payload: player
     }
 }
+
+export const restartGame = () => {
+    return { type: 'RESTART' }
+}
