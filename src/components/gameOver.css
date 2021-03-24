@@ -1,5 +1,5 @@
 .game-over__background {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
@@ -8,8 +8,39 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 .game-over__box {
+    background-color: #fff;
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .8);
+}
+
+.game-over__img {
+    position: absolute;
+    top: -50%;
+    height: 279px;
+}
+
+.game-over__text {
+    font-size: 60px;
+    font-weight: 200;
+    margin: 50px 0;
+}
+
+.game-over__btn {
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    background: transparent;
 }

@@ -14,6 +14,7 @@ const GameOver = (props) => {
     return ReactDom.createPortal(
         (<div className="game-over__background">
             <div className="game-over__box">
+                <img src="/img/winner.png" alt="winner image" className="game-over__img" />
                 <div className="game-over__text">
                     Player {winner} wins!
                 </div>

@@ -31,8 +31,13 @@ const ChessBoard = (props) => {
                 props.checkmate(props.turn)
                 props.check(props.turn)
             } else {
-                console.log('Player is in check')
                 props.check(props.turn)
+                setTimeout(() => {
+                    props.newMessage({ 
+                        type: 'info', 
+                        text: `The ${props.turn} player is in check!` 
+                    })
+                }, 200)
             }
         }
     }, [props.turn])
