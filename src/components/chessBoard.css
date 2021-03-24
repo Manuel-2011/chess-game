@@ -31,3 +31,38 @@
 .board__cell--occupied {
     box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
 }
+
+.board__cell--selected {
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
+    animation: pulsateShadow 1s infinite;
+}
+
+
+.board__cell--selected svg {
+    transform: scale(1);
+    animation: pulsate 1s infinite;
+}
+
+@keyframes pulsate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes pulsateShadow {
+    0% {
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
+    }
+    50% {
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, .8);
+    }
+    100% {
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
+    }
+}

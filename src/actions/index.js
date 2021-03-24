@@ -25,3 +25,10 @@ export const checkmate = (player) => {
 export const restartGame = () => {
     return { type: 'RESTART' }
 }
+
+export const newMessage = (message) => {
+    return {
+        type: 'MESSAGE',
+        payload: message
+    }
+}

@@ -1,0 +1,43 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-image: linear-gradient(to right, rgb(255 161 40) 50%, #b3711b 70%, #412705);
+}
+
+.content {
+    width: 900px;
+    margin: 100px auto;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    column-gap: 30px;
+}
+
+.section-main {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+}
+
+.title-text {
+    text-align: center;
+    color: #b3711b;
+    font-family: 'Dela Gothic One', cursive;
+    font-size: 60px;
+    letter-spacing: 3px;
+    margin-bottom: 0;
+
+    display: inline-block;
+    background-image: linear-gradient(to right, #b3711b, #412705);
+    -webkit-background-clip: text;
+    color: transparent;
+}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import './chessBoard.css'
 import Cell from './Cell'
-import { movePiece, check, checkmate } from '../actions'
+import { movePiece, check, checkmate, newMessage } from '../actions'
 import { isCheck, movementIsValid, isCheckMate } from '../utils/chessLogic'
 
 const ChessBoard = (props) => {
@@ -17,7 +17,7 @@ const ChessBoard = (props) => {
             return props.movePiece(selectedPiece, targetLocation, props.board)
         }
 
-        console.log(valid.error)
+        props.newMessage({ type: 'error', text: valid.error })
     }
 
     useEffect(() => {
@@ -86,5 +86,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
         movePiece,
         check,
-        checkmate
+        checkmate,
+        newMessage
     })(ChessBoard)

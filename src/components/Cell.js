@@ -47,8 +47,13 @@ const Cell = ({ color, row, column, content, selectedPiece, setSelectedPiece, on
         }
     }
 
+    let selectedCell
+    if (selectedPiece) {
+        selectedCell = selectedPiece.location.column === column && selectedPiece.location.row === row
+    }
+
     return (
-        <div className={`board__cell board__cell--${color} ${content ? 'board__cell--occupied' : ''}`} 
+        <div className={`board__cell board__cell--${color} ${content ? 'board__cell--occupied' : ''} ${selectedCell ? 'board__cell--selected' : ''}`} 
             id={`${row}-${column}`}
             onClick={() => onCellClick(content, row, column)}
             >

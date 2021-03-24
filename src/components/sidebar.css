@@ -1,0 +1,15 @@
+.sidebar {
+    height: 100%;
+    background-color: rgb(255 161 40);
+    padding: 50px 20px;
+    border-radius: 20px;
+    width: 200px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .2);
+}
+
+.info-box__text {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, .5);
+}
