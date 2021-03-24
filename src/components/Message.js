@@ -11,13 +11,14 @@ const Message = (props) => {
         message = props.newMessage({})
     }, [props.turn])
 
-    if (!message) {
+    if (!message.text) {
         return null
     }
 
     return ReactDom.createPortal(
-        (<div className="message-box">
-            <div className="message-text">
+        (<div className={`message__box message__box--${message.type}`}>
+            <ion-icon className="message__icon" name="information-circle"></ion-icon>
+            <div className="message__text">
                 {message.text}
             </div>
             

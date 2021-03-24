@@ -9,9 +9,14 @@ body {
     background-image: linear-gradient(to right, rgb(255 161 40) 50%, #b3711b 70%, #412705);
 }
 
+.chessgame {
+    padding: 100px 50px;
+    overflow: hidden;
+}
+
 .content {
     width: 900px;
-    margin: 100px auto;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 4fr;
     column-gap: 30px;

@@ -1,0 +1,32 @@
+.background-figures {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: -10;
+}
+
+.background-figures__figure {
+    position: relative;
+}
+
+.background-figures__figure svg{
+    transform: scale(20);
+}
+
+.background-figures__figure--1 {
+    top: -52px;
+    left: -100px;
+    transform: rotate(50deg);
+}
+
+.background-figures__figure--2 {
+    top: -984px;
+    right: -1530px;
+    transform: rotate(-24deg);
+}
+
+.background-figures__figure--3 {
+    bottom: 40%;
+    left: 32%;
+    transform: rotate(0deg);
+}

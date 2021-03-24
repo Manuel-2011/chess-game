@@ -1,0 +1,39 @@
+.message__box {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 20px 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .4);
+    color: rgba(71, 71, 71, 0.6);
+    font-weight: 600;
+    opacity: 0;
+
+    display: flex;
+    align-items: center;
+
+    animation: moveInDown 0.5s cubic-bezier(.17,.67,.56,1.48) forwards;
+}
+
+ion-icon {
+    font-size: 38px;
+    margin-right: 10px;
+    color: #9a9a9a;
+}
+
+.message__box--error ion-icon {
+    color: #da0d0d;
+}
+
+@keyframes moveInDown {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
