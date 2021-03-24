@@ -18,6 +18,22 @@
 
 .board__cell {
     width: 45px;   
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.board__cell:hover {
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
+}
+
+.board__cell--my-pieces:hover {
+    background-color: rgb(101, 187, 31);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
+}
+
+.board__cell--oponent:hover {
+    background-color: rgb(187, 54, 31);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
 }
 
 .board__cell--white {

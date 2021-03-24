@@ -52,6 +52,7 @@ const ChessBoard = (props) => {
                 // if it is even the cell will be black
                 let color = (rowNumber + columnNumber) % 2 === 0 ? 'white' : 'black'
                 return <Cell 
+                            turn={props.turn}
                             color={color} 
                             row={rowNumber} 
                             column={columnNumber} 
