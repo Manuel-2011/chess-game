@@ -27,6 +27,10 @@ ion-icon {
     color: #da0d0d;
 }
 
+.message__box--success ion-icon {
+    color: #47da0d;
+}
+
 @keyframes moveInDown {
     0% {
         opacity: 0;

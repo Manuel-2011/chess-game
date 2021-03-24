@@ -3,9 +3,19 @@ import GameOver from './GameOver'
 import Sidebar from './Sidebar'
 import Message from './Message'
 import BackgroundFigures from './BackgroundFigures'
+import { connect } from 'react-redux'
+import { newMessage } from '../actions'
 import './app.css'
+import { useEffect } from 'react'
 
-function App() {
+function App(props) {
+  useEffect(() => {
+    props.newMessage({ 
+      type: 'success', 
+      text: 'Welcome to the Chess Game! to play select a piece and then select the cell where you want to move it.'
+    })
+  }, [])
+
   return (
     <div className="App">
       <div className="chessgame">
@@ -29,4 +39,4 @@ function App() {
   );
 }
 
-export default App;
+export default connect(() => {}, { newMessage })(App);
