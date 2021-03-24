@@ -54,6 +54,7 @@
 }
 
 .board__cell--selected {
+    background-color: rgb(101, 187, 31);
     box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
     animation: pulsateShadow 1s infinite;
 }
