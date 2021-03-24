@@ -4,11 +4,13 @@ import turnReducer from './turnReducer'
 import checkReducer from './checkReducer'
 import checkmateReducer from './checkmateReducer'
 import messageReducer from './messageReducer'
+import hintReducer from './hintReducer'
 
 export default combineReducers({
     board: boardReducer,
     turn: turnReducer,
     inCheck: checkReducer,
     inCheckmate: checkmateReducer,
-    message: messageReducer
+    message: messageReducer,
+    hint: hintReducer
 })

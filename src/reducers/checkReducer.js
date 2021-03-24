@@ -3,6 +3,10 @@ const checkReducer = (player = '', action) => {
         return action.payload
     }
 
+    if (action.type === 'MOVEMENT') {
+        return ''
+    }
+
     if (action.type === "RESTART") {
         return ''
     }

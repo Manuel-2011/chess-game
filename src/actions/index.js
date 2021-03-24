@@ -32,3 +32,16 @@ export const newMessage = (message) => {
         payload: message
     }
 }
+
+export const newHint = (cells) => {
+    return {
+        type: 'NEW HINT',
+        payload: cells
+    }
+}
+
+export const activeHint = () => {
+    return {
+        type: 'ACTIVE HINT'
+    }
+}

@@ -6,7 +6,7 @@ import Knight from './chessPieces/Knight'
 import Queen from './chessPieces/Queen'
 import Rook from './chessPieces/Rook'
 
-const Cell = ({ turn, color, row, column, content, selectedPiece, setSelectedPiece, onClick }) => {
+const Cell = ({ turn, color, row, column, content, selectedPiece, setSelectedPiece, onClick, hint }) => {
     const renderPiece = () => {
         if (content) {
             switch (content.name) {
@@ -51,15 +51,23 @@ const Cell = ({ turn, color, row, column, content, selectedPiece, setSelectedPie
     if (selectedPiece) {
         selectedCell = selectedPiece.location.column === column && selectedPiece.location.row === row
     }
-
+    
     const colorClassname = `board__cell board__cell--${color}`
     const occupiedClassname = content ? 'board__cell--occupied' : ''
     const selectedClassname = selectedCell ? 'board__cell--selected' : ''
     const playerClassname = content ? content.player === turn ? 'board__cell--my-pieces' : 'board__cell--oponent' : ''
+    let hintClassname = ''
+    if (hint.active) {
+        hint.cells.forEach(cell => {
+            if (cell.row === row && cell.column === column) {
+                hintClassname = 'board__cell--hint'
+            }
+        })
+    }
 
     return (
         <div 
-        className={`board__cell ${colorClassname} ${occupiedClassname} ${selectedClassname} ${playerClassname}`} 
+        className={`board__cell ${colorClassname} ${occupiedClassname} ${selectedClassname} ${playerClassname} ${hintClassname}`} 
         id={`${row}-${column}`}
         onClick={() => onCellClick(content, row, column)}
         >

@@ -1,9 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import './sidebar.css'
-import { restartGame, checkmate } from '../actions'
+import { restartGame, checkmate, activeHint } from '../actions'
 
 const Sidebar = (props) => {
+    let hintButton
+    if (props.inCheck) {
+        hintButton = (
+            <button className="sidebar__btn"
+            onClick= {props.activeHint}
+            >Hint</button>
+        )
+    }
+
     return (
         <div className="sidebar">
             <div className="info-box">
@@ -21,19 +30,26 @@ const Sidebar = (props) => {
                 className="sidebar__btn"
                 onClick={() => props.checkmate(props.turn)}
                 >Give Up</button>
+
+                {hintButton}
             </div>
         </div>
     )
 }
 
 const mapStateToProps = (state) => {
-    return { turn: state.turn }
+    return { 
+        turn: state.turn,
+        inCheck: state.inCheck,
+        hint: state.hint
+    }
 }
 
 export default connect(
     mapStateToProps,
     {
         restartGame,
-        checkmate
+        checkmate,
+        activeHint
     }
     )(Sidebar)

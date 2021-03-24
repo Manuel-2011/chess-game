@@ -175,13 +175,12 @@ export const isCheckMate = (turn, board) => {
         for (let i=0 ; i< possibleMovements.length; i++) {
             const validMove = movementIsValid(turn, moves[j].piece, possibleMovements[i], board, turn).valid
             if (validMove) {
-                console.log('valid move', possibleMovements[i], moves[j].piece)
-                return false
+                return { result: false, move: [possibleMovements[i], moves[j].piece.location]}
             }
         }
     }
 
-    return true
+    return { result: true }
 }
 
 export const horizontalMoves = ({ row, column }) => {
