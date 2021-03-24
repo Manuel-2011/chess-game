@@ -9,12 +9,12 @@ import { connect } from 'react-redux'
 const BackgroundFigures = (props) => {
     const colors ={
         white: {
-            color: '#fff',
+            color: '#f9f9f9',
             color2: '#717171'
         },
         black: {
             color: '#292929',
-            color2: '#fff'
+            color2: '#f5f5f5'
         }
     }
 
