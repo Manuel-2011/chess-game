@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import './sidebar.css'
-import { restartGame } from '../actions'
+import { restartGame, checkmate } from '../actions'
 
 const Sidebar = (props) => {
     return (
@@ -11,6 +11,16 @@ const Sidebar = (props) => {
                     <h3 className="info-box__title">Turn</h3>
                     <p className="info-box__text">{props.turn}</p>
                 </div>
+            </div>
+            <div className="sidebar__actions">
+                <button 
+                className="sidebar__btn"
+                onClick={props.restartGame}
+                >Restart Game</button>
+                <button 
+                className="sidebar__btn"
+                onClick={() => props.checkmate(props.turn)}
+                >Give Up</button>
             </div>
         </div>
     )
@@ -22,5 +32,8 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    { restartGame }
+    {
+        restartGame,
+        checkmate
+    }
     )(Sidebar)
