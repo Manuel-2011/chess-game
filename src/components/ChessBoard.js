@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import './chessBoard.css'
 import Cell from './Cell'
-import { movePiece, check, checkmate, newMessage, newHint } from '../actions'
+import { movePiece, check, checkmate, newMessage, newHint, enableEnPassant } from '../actions'
 import { isCheck, movementIsValid, isCheckMate } from '../utils/chessLogic'
 
 const ChessBoard = (props) => {
@@ -19,6 +19,7 @@ const ChessBoard = (props) => {
             // Check if this movement makes possible en passant move
             if (valid.special && valid.special.name === 'en passant') {
                 console.log('en passant')
+                props.enableEnPassant(valid.special)
             }
             return
         }
@@ -103,5 +104,6 @@ export default connect(mapStateToProps, {
         check,
         checkmate,
         newMessage,
-        newHint
+        newHint,
+        enableEnPassant
     })(ChessBoard)
