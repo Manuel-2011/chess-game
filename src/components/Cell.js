@@ -52,13 +52,17 @@ const Cell = ({ turn, color, row, column, content, selectedPiece, setSelectedPie
         selectedCell = selectedPiece.location.column === column && selectedPiece.location.row === row
     }
 
+    const colorClassname = `board__cell board__cell--${color}`
+    const occupiedClassname = content ? 'board__cell--occupied' : ''
+    const selectedClassname = selectedCell ? 'board__cell--selected' : ''
     const playerClassname = content ? content.player === turn ? 'board__cell--my-pieces' : 'board__cell--oponent' : ''
 
     return (
-        <div className={`board__cell board__cell--${color} ${content ? 'board__cell--occupied' : ''} ${selectedCell ? 'board__cell--selected' : ''} ${playerClassname}`} 
-            id={`${row}-${column}`}
-            onClick={() => onCellClick(content, row, column)}
-            >
+        <div 
+        className={`board__cell ${colorClassname} ${occupiedClassname} ${selectedClassname} ${playerClassname}`} 
+        id={`${row}-${column}`}
+        onClick={() => onCellClick(content, row, column)}
+        >
             {renderPiece()}
         </div>
     )
