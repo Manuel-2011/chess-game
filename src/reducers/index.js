@@ -5,6 +5,7 @@ import checkReducer from './checkReducer'
 import checkmateReducer from './checkmateReducer'
 import messageReducer from './messageReducer'
 import hintReducer from './hintReducer'
+import specialMoveReducer from './specialMoveReducer'
 
 export default combineReducers({
     board: boardReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     inCheck: checkReducer,
     inCheckmate: checkmateReducer,
     message: messageReducer,
-    hint: hintReducer
+    hint: hintReducer,
+    specialMove: specialMoveReducer
 })

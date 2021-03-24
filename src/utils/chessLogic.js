@@ -99,14 +99,17 @@ export const movementIsValid = (turn, piece, targetLocation, board, checkState) 
         return { valid: false, error: 'The cell is occupied' }
     }
     // if there is an oponent's player piece it is a capture movement
+    let validMoveResult
     if (targetPiece && targetPiece.player !== piece.player) {
-        if (!piece.validCaptureMovement(targetLocation, board)) {
+        validMoveResult = piece.validCaptureMovement(targetLocation, board)
+        if (!validMoveResult.result) {
             return { valid: false, error: 'Invalid capture movement' }
         }
     }
     // if the target cell is empty it is a simple movement
     if (targetPiece === null) {
-        if (!piece.validMovement(targetLocation, board)) {
+        validMoveResult = piece.validMovement(targetLocation, board)
+        if (!validMoveResult.result) {
             return { valid: false, error: 'Invalid movement' }
         }
     }
@@ -125,7 +128,7 @@ export const movementIsValid = (turn, piece, targetLocation, board, checkState) 
     }
 
     // if movement passes all tests the movement is valid
-    return { valid: true }
+    return { valid: true, special: validMoveResult.special }
 }
 
 

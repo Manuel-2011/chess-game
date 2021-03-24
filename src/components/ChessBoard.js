@@ -14,7 +14,13 @@ const ChessBoard = (props) => {
         const valid = movementIsValid(props.turn, selectedPiece, targetLocation, props.board, props.inCheck)
         if (valid.valid) {
             // If movement is valid send the action with the move
-            return props.movePiece(selectedPiece, targetLocation, props.board)
+            props.movePiece(selectedPiece, targetLocation, props.board)
+
+            // Check if this movement makes possible en passant move
+            if (valid.special && valid.special.name === 'en passant') {
+                console.log('en passant')
+            }
+            return
         }
 
         props.newMessage({ type: 'error', text: valid.error })

@@ -45,3 +45,10 @@ export const activeHint = () => {
         type: 'ACTIVE HINT'
     }
 }
+
+export const enableEnPassant = (specialMove) => {
+    return {
+        type: 'ENABLE EN PASSANT',
+        payload: specialMove
+    }
+}
