@@ -26,12 +26,15 @@ const Sidebar = (props) => {
                 className="sidebar__btn"
                 onClick={props.restartGame}
                 >Restart Game</button>
-                <button 
-                className="sidebar__btn"
-                onClick={() => props.checkmate(props.turn)}
-                >Give Up</button>
 
-                {hintButton}
+                {props.inCheckmate ==='' && 
+                <React.Fragment>
+                    <button 
+                    className="sidebar__btn"
+                    onClick={() => props.checkmate(props.turn)}
+                    >Give Up</button>
+                    {hintButton}
+                </React.Fragment>}  
             </div>
         </div>
     )
@@ -41,6 +44,7 @@ const mapStateToProps = (state) => {
     return { 
         turn: state.turn,
         inCheck: state.inCheck,
+        inCheckmate: state.inCheckmate,
         hint: state.hint
     }
 }

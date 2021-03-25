@@ -1,18 +1,33 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactDom from 'react-dom'
 import { connect } from 'react-redux'
 import './gameOver.css'
-import { restartGame } from '../actions'
+import { restartGame, newMessage } from '../actions'
 
 const GameOver = (props) => {
+    const [activeWindow, setActiveWindow] = useState(true)
+
+    useEffect(() => {
+        setActiveWindow(true)
+    }, [props.checkmate])
+
     if (!props.checkmate) {
+        return null
+    }
+
+    if (!activeWindow) {
         return null
     }
 
     const winner = props.checkmate === 'white' ? 'black' : 'white'
 
+    const closeWindow = () => {
+       setActiveWindow(false)
+       props.newMessage({ type: 'success', text: `Congratulations! The ${winner} player wins.`})
+    }
+
     return ReactDom.createPortal(
-        (<div className="game-over__background">
+        (<div className="game-over__background" onClick={closeWindow}>
             <div className="game-over__box">
                 <img src="/img/winner.png" alt="winner image" className="game-over__img" />
                 <div className="game-over__text">
@@ -31,5 +46,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    { restartGame }
+    { restartGame, newMessage }
     )(GameOver)

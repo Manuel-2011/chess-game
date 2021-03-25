@@ -100,6 +100,7 @@ const ChessBoard = (props) => {
                             hint={props.hint}
                             specialMove={props.specialMove}
                             showPromotionWindow={props.promotionWindow}
+                            inCheckmate={props.inCheckmate}
                         />
             })
 
@@ -125,6 +126,7 @@ const mapStateToProps = (state) => {
         board: state.board,
         turn: state.turn,
         inCheck: state.inCheck,
+        inCheckmate: state.inCheckmate,
         hint: state.hint,
         specialMove: state.specialMove
     }

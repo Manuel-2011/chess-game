@@ -22,7 +22,18 @@
     transition: all .2s;
 }
 
+.board__cell--game-over {
+    cursor: initial;
+}
+
 .board__cell:hover {
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
+}
+
+.board__cell--game-over:hover {
+    box-shadow: none;
+}
+.board__cell--game-over.board__cell--occupied:hover {
     box-shadow: inset 0 0 20px rgba(0, 0, 0, .5);
 }
 

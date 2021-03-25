@@ -6,7 +6,7 @@ import Knight from './chessPieces/Knight'
 import Queen from './chessPieces/Queen'
 import Rook from './chessPieces/Rook'
 
-const Cell = ({ turn, color, row, column, content, selectedPiece, setSelectedPiece, onClick, hint, specialMove, showPromotionWindow }) => {
+const Cell = ({ turn, color, row, column, content, selectedPiece, setSelectedPiece, onClick, hint, specialMove, showPromotionWindow, inCheckmate }) => {
     const renderPiece = () => {
         if (content) {
             switch (content.name) {
@@ -76,6 +76,18 @@ const Cell = ({ turn, color, row, column, content, selectedPiece, setSelectedPie
     if (promotion && promotion.pawnLocation.row === row && promotion.pawnLocation.column === column) {
         tooltip = <div className="tooltip__text" onClick={onPromoteClick}>Promote</div>
         tooltipClassname = "tooltip"
+    }
+
+    // If player is on checkmate deactivate onClick and other classes
+    if (inCheckmate !== '') {
+        return (
+            <div 
+            className={`board__cell ${colorClassname} ${occupiedClassname} board__cell--game-over`} 
+            id={`${row}-${column}`}
+            >
+                {renderPiece()}
+            </div>
+        )
     }
 
     return (
