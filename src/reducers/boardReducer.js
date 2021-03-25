@@ -23,14 +23,18 @@ const boardReducer = (board = initialBoard, action) => {
         // Erase piece from the old location
         finalBoard[oldRow][oldColumn] = null
 
-        
-
-
         return finalBoard
     }
 
-    if (action.type === "RESTART") {
+    if (action.type === 'RESTART') {
         return initialGame()
+    }
+
+    if (action.type === 'EN PASSANT') {
+        finalBoard = board.slice()
+        // Erase the captured pawn with the en passant move
+        finalBoard[action.payload.row][action.payload.column] = null
+        return finalBoard
     }
 
     return finalBoard

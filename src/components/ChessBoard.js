@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import './chessBoard.css'
 import Cell from './Cell'
-import { movePiece, check, checkmate, newMessage, newHint } from '../actions'
+import { movePiece, check, checkmate, newMessage, newHint, enableEnPassant, enPassant } from '../actions'
 import { isCheck, movementIsValid, isCheckMate } from '../utils/chessLogic'
 
 const ChessBoard = (props) => {
@@ -11,10 +11,27 @@ const ChessBoard = (props) => {
 
     // Select a piece to move or select where you want to move the piece
     const onCellClick = (targetLocation) => {
-        const valid = movementIsValid(props.turn, selectedPiece, targetLocation, props.board, props.inCheck)
+        const valid = movementIsValid(props.turn, selectedPiece, targetLocation, props.board, props.inCheck, props.specialMove)
         if (valid.valid) {
             // If movement is valid send the action with the move
-            return props.movePiece(selectedPiece, targetLocation, props.board)
+            props.movePiece(selectedPiece, targetLocation, props.board)
+
+            // Check if this movement makes possible en passant move
+            if (valid.special && valid.special.name === 'en passant') {
+                props.enableEnPassant(valid.special)
+            }
+
+            // check if special movement en passant is done
+            if (valid.special && valid.special.name === 'en passant done') {
+                props.enPassant(props.specialMove.enPassant.piece)
+                setTimeout(() => {
+                    props.newMessage({ 
+                        type: 'success', 
+                        text: '"En passant" move!'
+                    })
+                }, 200)
+            }
+            return
         }
 
         props.newMessage({ type: 'error', text: valid.error })
@@ -23,10 +40,10 @@ const ChessBoard = (props) => {
     useEffect(() => {
         // Check if there is a check
         const oponent = props.turn === 'white' ? 'black' : 'white'
-        if (isCheck(oponent, props.board).result) {
+        if (isCheck(oponent, props.board, props.specialMove).result) {
 
             // Is it a check mate?
-            const checkmate = isCheckMate(props.turn, props.board)
+            const checkmate = isCheckMate(props.turn, props.board, props.specialMove)
             if (checkmate.result) {
                 props.checkmate(props.turn)
                 props.check(props.turn)
@@ -88,7 +105,8 @@ const mapStateToProps = (state) => {
         board: state.board,
         turn: state.turn,
         inCheck: state.inCheck,
-        hint: state.hint
+        hint: state.hint,
+        specialMove: state.specialMove
     }
 }
 
@@ -97,5 +115,7 @@ export default connect(mapStateToProps, {
         check,
         checkmate,
         newMessage,
-        newHint
+        newHint,
+        enableEnPassant,
+        enPassant
     })(ChessBoard)

@@ -25,7 +25,7 @@ export const pawn = (player, row, column) => {
             column,
             row
         },
-        validMovement(targetLocation) {return pawnValidMovement(this, targetLocation)},
+        validMovement(targetLocation, board, specialMove) {return pawnValidMovement(this, targetLocation, board, specialMove)},
         validCaptureMovement(targetLocation) {return pawnValidCaptureMovement(this, targetLocation)},
         possibleMoves() {return possiblePawnMoves(this)},
         history: [],
@@ -120,30 +120,78 @@ export const queen = (player, row, column) => {
 //////////////////////////////////////
 // movement validation formulas
 
-const pawnValidMovement = (piece, targetLocation) => {
+const pawnValidMovement = (piece, targetLocation, board, specialMove) => {
         const rowOffset = targetLocation.row - piece.location.row
         const columnOffset = targetLocation.column - piece.location.column
+        const absColumnOffset = Math.abs(columnOffset)
         
         // Pawn moves 1 column forward
         if (piece.player === 'black') {
             if (rowOffset === 1 && columnOffset === 0) {
-                return true
+                return { result: true}
             }
             // If it is the first movement pawn is allowed to advance two steps
             if (piece.history.length === 0 && rowOffset === 2 && columnOffset === 0) {
-                return true
+
+                // If there is an oponent's pawn by it's side it will make possible the en passant move
+                let nextPiece = board[targetLocation.row][targetLocation.column - 1]
+                if (nextPiece && nextPiece.name === 'pawn' && nextPiece.player !== piece.player) {
+                    return { result: true, special: {name: 'en passant', piece }}
+                }
+                nextPiece = board[targetLocation.row][targetLocation.column + 1]
+                if (nextPiece && nextPiece.name === 'pawn' && nextPiece.player !== piece.player) {
+                    return { result: true, special: {name: 'en passant', piece }}
+                }
+
+                return { result: true}
             }
         } else {
             if (rowOffset === -1 && columnOffset === 0) {
-                return true
+                return { result: true}
             }
             // If it is the first movement pawn is allowed to advance two steps
             if (piece.history.length === 0 && rowOffset === -2 && columnOffset === 0) {
-                return true
+
+                // If there is an oponent's pawn by it's side it will make possible the en passant move
+                let nextPiece = board[targetLocation.row][targetLocation.column - 1]
+                if (nextPiece && nextPiece.name === 'pawn' && nextPiece.player !== piece.player) {
+                    return { result: true, special: {name: 'en passant', piece }}
+                }
+                nextPiece = board[targetLocation.row][targetLocation.column + 1]
+                if (nextPiece && nextPiece.name === 'pawn' && nextPiece.player !== piece.player) {
+                    return { result: true, special: {name: 'en passant', piece }}
+                }
+
+
+                return { result: true}
             }
         }
 
-    return false
+        // Check if it is a valid en passant movement
+        if (specialMove['enPassant']) {
+            // check if it is a valid diagonal move
+            if (piece.player === 'black') {
+                if (rowOffset === 1 && absColumnOffset === 1) {
+                    // check if the piece can capture the oponent's piece
+                    const enPassantPawnRow = specialMove['enPassant'].piece.location.row + 1
+                    const enPassantPawnColumn = specialMove['enPassant'].piece.location.column
+                    if (targetLocation.column === enPassantPawnColumn && targetLocation.row === enPassantPawnRow) {
+                        return { result: true, special: { name: 'en passant done', captured: { row: enPassantPawnRow, column: enPassantPawnColumn} }}
+                    }
+                }
+            } else {
+                if (rowOffset === -1 && absColumnOffset === 1) {
+                    // check if the piece can capture the oponent's piece
+                    const enPassantPawnRow = specialMove['enPassant'].piece.location.row - 1
+                    const enPassantPawnColumn = specialMove['enPassant'].piece.location.column
+                    if (targetLocation.column === enPassantPawnColumn && targetLocation.row === enPassantPawnRow) {
+                        return { result: true, special: { name: 'en passant done', captured: { row: enPassantPawnRow, column: enPassantPawnColumn} }}
+                    }
+                }
+            }
+        }
+
+    return { result: false}
 }
 const pawnValidCaptureMovement = (piece, targetLocation) => {
     const rowOffset = targetLocation.row - piece.location.row
@@ -152,15 +200,15 @@ const pawnValidCaptureMovement = (piece, targetLocation) => {
     // Pawn capture in diagonal
     if (piece.player === 'black') {
         if (rowOffset === 1 && absColumnOffset === 1) {
-            return true
+            return { result: true}
         }
     } else {
         if (rowOffset === -1 && absColumnOffset === 1) {
-            return true
+            return { result: true}
         }
     }
 
-return false
+return { result: false}
 }
 const kingValidMovement = (piece, targetLocation) => {
     const absRowOffset = Math.abs(targetLocation.row - piece.location.row)
@@ -168,10 +216,10 @@ const kingValidMovement = (piece, targetLocation) => {
     
     // King moves 1 step in any direction
     if ((absRowOffset === 1 || absColumnOffset === 1) && absRowOffset + absColumnOffset <= 2) {
-        return true
+        return { result: true}
     }
 
-return false
+return { result: false}
 }
 const queenValidMovement = (piece, targetLocation, board) => {
     const rowOffset = targetLocation.row - piece.location.row
@@ -186,47 +234,47 @@ const queenValidMovement = (piece, targetLocation, board) => {
     if (absColumnOffset - absRowOffset === 0) direction = 'diagonal'
     
     if (!direction) {
-        return false
+        return { result: false}
     }
     // Check the piece isn´t jumping any other piece
     if (isJumping(piece.location, targetLocation, board)) {
-        return false
+        return { result: false}
     }
 
     // If the movement passed all the above tests is valid
-    return true
+    return { result: true}
 }
 const rookValidMovement = (piece, targetLocation, board) => {
     const rowOffset = targetLocation.row - piece.location.row
     const columnOffset = targetLocation.column - piece.location.column
     // rook only moves in horizontally or vertically direction
     if (rowOffset !== 0 && columnOffset !== 0) {
-        return false
+        return { result: false}
     }
 
     // rook can't jump any other piece
     if (isJumping(piece.location, targetLocation, board)) {
-        return false
+        return { result: false}
     }
 
     // If the movement passed all the above tests is valid
-    return true
+    return { result: true}
 }
 const bishopValidMovement = (piece, targetLocation, board) => {
     const absRowOffset = Math.abs(targetLocation.row - piece.location.row)
     const absColumnOffset = Math.abs(targetLocation.column - piece.location.column)
     // bishops only can moves in diagonals
     if (absColumnOffset - absRowOffset !== 0) {
-        return false
+        return { result: false}
     }
 
     // bishops can't jump any other piece
     if (isJumping(piece.location, targetLocation, board)) {
-        return false
+        return { result: false}
     }
 
     // If the movement passed all the above tests is valid
-    return true
+    return { result: true}
 }
 const knightValidMovement = (piece, targetLocation) => {
     const absRowOffset = Math.abs(targetLocation.row - piece.location.row)
@@ -236,10 +284,10 @@ const knightValidMovement = (piece, targetLocation) => {
     if (absRowOffset === 2 && absColumnOffset === 1) direction = 'verticalL'
     if (absRowOffset === 1 && absColumnOffset === 2) direction = 'horizontalL'
     if (direction) {
-        return true
+        return { result: true}
     }
 
-    return false
+    return { result: false}
 }
 
 //////////////////////////////////////
