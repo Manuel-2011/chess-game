@@ -8,6 +8,19 @@ const specialMoveReducer = (specialMove = {}, action) => {
         return { ...specialMove, enPassant: undefined }
     }
 
+    if (action.type === 'ENABLE PROMOTION') {
+        return { ...specialMove, promotePawn: action.payload }
+    }
+
+    if (action.type === 'PROMOTE PAWN') {
+        return { ...specialMove, promotePawn: undefined }
+    }
+
+    if (action.type === 'CHANGE PROMOTION WINDOW STATE') {
+        const modifiedWindow = { ...specialMove.promotePawn, active: !specialMove.promotePawn.active}
+        return { ...specialMove, promotePawn: modifiedWindow }
+    }
+
     return specialMove
 }
 

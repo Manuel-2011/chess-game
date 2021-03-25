@@ -128,6 +128,17 @@ const pawnValidMovement = (piece, targetLocation, board, specialMove) => {
         // Pawn moves 1 column forward
         if (piece.player === 'black') {
             if (rowOffset === 1 && columnOffset === 0) {
+
+                // Check if the pawn reach the other side
+                if (targetLocation.row === 7) {
+                    return { result: true, special: {
+                        name: 'promote pawn',
+                        pawnLocation: targetLocation,
+                        active: false,
+                        player: piece.player 
+                    }}
+                }
+
                 return { result: true}
             }
             // If it is the first movement pawn is allowed to advance two steps
@@ -147,6 +158,17 @@ const pawnValidMovement = (piece, targetLocation, board, specialMove) => {
             }
         } else {
             if (rowOffset === -1 && columnOffset === 0) {
+
+                // Check if the pawn reach the other side
+                if (targetLocation.row === 0) {
+                    return { result: true, special: {
+                        name: 'promote pawn',
+                        pawnLocation: targetLocation,
+                        active: false,
+                        player: piece.player 
+                    }}
+                }
+
                 return { result: true}
             }
             // If it is the first movement pawn is allowed to advance two steps
@@ -200,10 +222,32 @@ const pawnValidCaptureMovement = (piece, targetLocation) => {
     // Pawn capture in diagonal
     if (piece.player === 'black') {
         if (rowOffset === 1 && absColumnOffset === 1) {
+
+            // Check if the pawn reach the other side
+            if (targetLocation.row === 7) {
+                return { result: true, special: {
+                    name: 'promote pawn',
+                    pawnLocation: targetLocation,
+                    active: false,
+                    player: piece.player 
+                }}
+            }
+
             return { result: true}
         }
     } else {
         if (rowOffset === -1 && absColumnOffset === 1) {
+
+            // Check if the pawn reach the other side
+            if (targetLocation.row === 0) {
+                return { result: true, special: {
+                    name: 'promote pawn',
+                    pawnLocation: targetLocation,
+                    active: false,
+                    player: piece.player 
+                }}
+            }
+
             return { result: true}
         }
     }

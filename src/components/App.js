@@ -1,5 +1,6 @@
 import ChessBoard from './ChessBoard'
 import GameOver from './GameOver'
+import Promote from './Promote'
 import Sidebar from './Sidebar'
 import Message from './Message'
 import BackgroundFigures from './BackgroundFigures'
@@ -35,6 +36,7 @@ function App(props) {
       
       <Message />
       <GameOver />
+      <Promote />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import './chessBoard.css'
 import Cell from './Cell'
-import { movePiece, check, checkmate, newMessage, newHint, enableEnPassant, enPassant, castling } from '../actions'
+import { movePiece, check, checkmate, newMessage, newHint, enableEnPassant, enPassant, castling, enablePromotion, promotionWindow } from '../actions'
 import { isCheck, movementIsValid, isCheckMate } from '../utils/chessLogic'
 
 const ChessBoard = (props) => {
@@ -13,6 +13,8 @@ const ChessBoard = (props) => {
     const onCellClick = (targetLocation) => {
         const valid = movementIsValid(props.turn, selectedPiece, targetLocation, props.board, props.inCheck, props.specialMove)
         if (valid.valid) {
+
+            // Check if it is a castling movement
             if (valid.special && valid.special.name === 'castling') {
                 props.castling(valid.special)
                 setTimeout(() => {
@@ -22,6 +24,11 @@ const ChessBoard = (props) => {
                     })
                 }, 200)
                 return 
+            }
+
+            // Check if the move enables pawn promotion
+            if (valid.special && valid.special.name === 'promote pawn') {
+                props.enablePromotion(valid.special)
             }
             
             // If movement is valid send the action with the move
@@ -64,7 +71,7 @@ const ChessBoard = (props) => {
                 setTimeout(() => {
                     props.newMessage({ 
                         type: 'info', 
-                        text: `The ${props.turn} player is in check!` 
+                        text: `The ${props.turn} player is in check! You can use a hint if you want.` 
                     })
                 }, 200)
             }
@@ -91,6 +98,8 @@ const ChessBoard = (props) => {
                             selectedPiece={selectedPiece}
                             setSelectedPiece={setSelectedPiece}
                             hint={props.hint}
+                            specialMove={props.specialMove}
+                            showPromotionWindow={props.promotionWindow}
                         />
             })
 
@@ -129,5 +138,7 @@ export default connect(mapStateToProps, {
         newHint,
         enableEnPassant,
         enPassant,
-        castling
+        castling,
+        enablePromotion,
+        promotionWindow
     })(ChessBoard)
