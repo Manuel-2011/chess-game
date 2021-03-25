@@ -25,14 +25,14 @@ const ChessBoard = (props) => {
                 }, 200)
                 return 
             }
+            
+            // If movement is valid send the action with the move
+            props.movePiece(selectedPiece, targetLocation, props.board)
 
             // Check if the move enables pawn promotion
             if (valid.special && valid.special.name === 'promote pawn') {
                 props.enablePromotion(valid.special)
             }
-            
-            // If movement is valid send the action with the move
-            props.movePiece(selectedPiece, targetLocation, props.board)
 
             // Check if this movement makes possible en passant move
             if (valid.special && valid.special.name === 'en passant') {
@@ -76,7 +76,7 @@ const ChessBoard = (props) => {
                 }, 200)
             }
         }
-    }, [props.turn])
+    }, [props.board])
 
     const renderBoard = () => {
         // Iterate for each row

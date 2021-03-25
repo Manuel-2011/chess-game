@@ -5,7 +5,7 @@ const specialMoveReducer = (specialMove = {}, action) => {
     }
 
     if (action.type === 'MOVEMENT') {
-        return { ...specialMove, enPassant: undefined }
+        return { ...specialMove, enPassant: undefined, promotePawn: undefined }
     }
 
     if (action.type === 'ENABLE PROMOTION') {
