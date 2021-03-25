@@ -122,8 +122,16 @@ export const movementIsValid = (turn, piece, targetLocation, board, checkState, 
         // check if movement eliminates the check
         // if doesn't the movement is invalid
         const oponent = turn === 'white' ? 'black' : 'white'
-        if (isCheck(oponent, hBoard).result) {
+        if (isCheck(oponent, hBoard, specialMove).result) {
             return { valid: false, error: 'Player is still in check' }
+        }
+    } else {
+        // if move leaves the king in check the move is invalid
+        // make hypothetical movement
+        const hBoard = makeHypotheticalMove(board, piece, targetLocation, validMoveResult.special)
+        const oponent = turn === 'white' ? 'black' : 'white'
+        if (isCheck(oponent, hBoard, specialMove).result) {
+            return { valid: false, error: "You can't leave the king in check!" }
         }
     }
 
