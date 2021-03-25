@@ -3,6 +3,10 @@ const messageReducer = (message = {}, action) => {
         return { type: action.payload.type, text: action.payload.text}
     }
 
+    if (action.type === 'RESTART') {
+        return {}
+    }
+
     return message
 }
 

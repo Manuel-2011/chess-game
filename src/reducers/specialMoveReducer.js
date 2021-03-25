@@ -21,6 +21,10 @@ const specialMoveReducer = (specialMove = {}, action) => {
         return { ...specialMove, promotePawn: modifiedWindow }
     }
 
+    if (action.type === 'RESTART') {
+        return {}
+    }
+
     return specialMove
 }
 

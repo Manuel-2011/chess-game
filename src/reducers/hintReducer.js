@@ -11,6 +11,10 @@ const hintReducer = (hint = { active: false }, action) => {
         return { active: false }
     }
 
+    if (action.type === 'RESTART') {
+        return { active: false }
+    }
+
     return hint
 }
 
