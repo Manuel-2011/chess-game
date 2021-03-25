@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import { connect } from 'react-redux'
 import './promote.css'
-import { promotePawn, promotionWindow } from '../actions'
+import { promotePawn, promotionWindow, newMessage } from '../actions'
 
 import Bishop from './chessPieces/Bishop'
 import Knight from './chessPieces/Knight'
@@ -31,6 +31,7 @@ const Promote = (props) => {
     const promotePawn = (event, name) => {
         props.promotePawn(pawnLocation, name, player)
         event.stopPropagation()
+        props.newMessage({ type: 'success', text: 'Pawn promoted!' })
     }
 
     const closeWindow = () => {
@@ -71,5 +72,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    { promotePawn, promotionWindow }
+    { promotePawn, promotionWindow, newMessage }
     )(Promote)
