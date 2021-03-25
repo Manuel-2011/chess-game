@@ -6,7 +6,7 @@ import Knight from './chessPieces/Knight'
 import Queen from './chessPieces/Queen'
 import Rook from './chessPieces/Rook'
 
-const Cell = ({ turn, color, row, column, content, selectedPiece, setSelectedPiece, onClick, hint }) => {
+const Cell = ({ turn, color, row, column, content, selectedPiece, setSelectedPiece, onClick, hint, specialMove, showPromotionWindow }) => {
     const renderPiece = () => {
         if (content) {
             switch (content.name) {
@@ -65,12 +65,26 @@ const Cell = ({ turn, color, row, column, content, selectedPiece, setSelectedPie
         })
     }
 
+    // tooltip if the pawn can be promoted
+    let tooltip
+    let tooltipClassname = ''
+    const onPromoteClick = (e) => {
+        showPromotionWindow()
+        e.stopPropagation()
+    }
+    const promotion = specialMove.promotePawn
+    if (promotion && promotion.pawnLocation.row === row && promotion.pawnLocation.column === column) {
+        tooltip = <div className="tooltip__text" onClick={onPromoteClick}>Promote</div>
+        tooltipClassname = "tooltip"
+    }
+
     return (
         <div 
-        className={`board__cell ${colorClassname} ${occupiedClassname} ${selectedClassname} ${playerClassname} ${hintClassname}`} 
+        className={`board__cell ${colorClassname} ${occupiedClassname} ${selectedClassname} ${playerClassname} ${hintClassname} ${tooltipClassname}`} 
         id={`${row}-${column}`}
         onClick={() => onCellClick(content, row, column)}
         >
+            {tooltip}
             {renderPiece()}
         </div>
     )

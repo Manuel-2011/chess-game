@@ -65,6 +65,32 @@
     animation: pulsate 1s infinite;
 }
 
+.tooltip {
+    position: relative;
+}
+
+.tooltip__text {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+
+    top: -35px;
+    left: -24px;
+    color: #292929;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 10px 20px rgb(0, 0, 0, .4);
+    border-radius: 10px;
+    cursor: pointer;
+
+    transition: 0.5s ease-out;
+}
+
+.tooltip:hover .tooltip__text {
+    opacity: 1;
+    visibility: visible;
+}
+
 @keyframes pulsate {
     0% {
         transform: scale(1);

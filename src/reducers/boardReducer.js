@@ -58,6 +58,16 @@ const boardReducer = (board = initialBoard, action) => {
         return finalBoard
     }
 
+    if (action.type === 'PROMOTE PAWN') {
+        finalBoard = board.slice()
+
+        const row = action.payload.pawnLocation.row
+        const column = action.payload.pawnLocation.column
+        // replace the pawn with the new piece
+        finalBoard[row][column] = action.payload.newPiece
+        return finalBoard
+    }
+
     return finalBoard
 }
 

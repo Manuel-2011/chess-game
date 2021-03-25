@@ -1,3 +1,5 @@
+import { queen, bishop, knight, rook } from '../utils/chessPieces'
+
 export const movePiece = (piece, targetLocation) => {
     return {
         type: 'MOVEMENT',
@@ -64,5 +66,43 @@ export const castling = (specialMove) => {
     return {
         type: 'CASTLING',
         payload: specialMove
+    }
+}
+
+export const enablePromotion = (specialMove) => {
+    return {
+        type: 'ENABLE PROMOTION',
+        payload: specialMove
+    }
+}
+
+export const promotionWindow = () => {
+    return {
+        type: 'CHANGE PROMOTION WINDOW STATE'
+    }
+}
+
+export const promotePawn = (pawnLocation, replacement, player) => {
+    let newPiece
+    switch (replacement) {
+        case 'queen':
+            newPiece = queen(player, pawnLocation.row, pawnLocation.column)
+            break
+        case 'rook':
+            newPiece = rook(player, pawnLocation.row, pawnLocation.column)
+            break
+        case 'knight':
+            newPiece = knight(player, pawnLocation.row, pawnLocation.column)
+            break
+        case 'bishop':
+            newPiece = bishop(player, pawnLocation.row, pawnLocation.column)
+            break
+        default:
+            break
+    }
+
+    return {
+        type: 'PROMOTE PAWN',
+        payload: { pawnLocation, newPiece }
     }
 }
