@@ -25,7 +25,7 @@ export const pawn = (player, row, column) => {
             column,
             row
         },
-        validMovement(targetLocation, board) {return pawnValidMovement(this, targetLocation, board)},
+        validMovement(targetLocation, board, specialMove) {return pawnValidMovement(this, targetLocation, board, specialMove)},
         validCaptureMovement(targetLocation) {return pawnValidCaptureMovement(this, targetLocation)},
         possibleMoves() {return possiblePawnMoves(this)},
         history: [],
@@ -120,9 +120,10 @@ export const queen = (player, row, column) => {
 //////////////////////////////////////
 // movement validation formulas
 
-const pawnValidMovement = (piece, targetLocation, board) => {
+const pawnValidMovement = (piece, targetLocation, board, specialMove) => {
         const rowOffset = targetLocation.row - piece.location.row
         const columnOffset = targetLocation.column - piece.location.column
+        const absColumnOffset = Math.abs(columnOffset)
         
         // Pawn moves 1 column forward
         if (piece.player === 'black') {
@@ -163,6 +164,30 @@ const pawnValidMovement = (piece, targetLocation, board) => {
 
 
                 return { result: true}
+            }
+        }
+
+        // Check if it is a valid en passant movement
+        if (specialMove['enPassant']) {
+            // check if it is a valid diagonal move
+            if (piece.player === 'black') {
+                if (rowOffset === 1 && absColumnOffset === 1) {
+                    // check if the piece can capture the oponent's piece
+                    const enPassantPawnRow = specialMove['enPassant'].piece.location.row + 1
+                    const enPassantPawnColumn = specialMove['enPassant'].piece.location.column
+                    if (targetLocation.column === enPassantPawnColumn && targetLocation.row === enPassantPawnRow) {
+                        return { result: true, special: { name: 'en passant done', captured: { row: enPassantPawnRow, column: enPassantPawnColumn} }}
+                    }
+                }
+            } else {
+                if (rowOffset === -1 && absColumnOffset === 1) {
+                    // check if the piece can capture the oponent's piece
+                    const enPassantPawnRow = specialMove['enPassant'].piece.location.row - 1
+                    const enPassantPawnColumn = specialMove['enPassant'].piece.location.column
+                    if (targetLocation.column === enPassantPawnColumn && targetLocation.row === enPassantPawnRow) {
+                        return { result: true, special: { name: 'en passant done', captured: { row: enPassantPawnRow, column: enPassantPawnColumn} }}
+                    }
+                }
             }
         }
 

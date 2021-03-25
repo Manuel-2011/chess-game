@@ -4,6 +4,10 @@ const specialMoveReducer = (specialMove = {}, action) => {
         return { ...specialMove, enPassant: action.payload }
     }
 
+    if (action.type === 'MOVEMENT') {
+        return { ...specialMove, enPassant: undefined }
+    }
+
     return specialMove
 }
 

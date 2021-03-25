@@ -53,7 +53,7 @@ export const isJumping = (initialLocation, finalLocation, board) => {
 
 
 // Defines wheter the actual player is in check or not
-export const isCheck = (oponent, board) => {
+export const isCheck = (oponent, board, specialMove) => {
     // take all the oponent's pieces and find the actual player's king
     let king
     const oponentPieces = board.reduce((pieces, row) => {
@@ -72,7 +72,7 @@ export const isCheck = (oponent, board) => {
     // Check if any of the oponent's pieces is threating the king
     let check = { result: false }
     oponentPieces.forEach(piece => {
-        if (movementIsValid(oponent, piece, king.location, board).valid) {
+        if (movementIsValid(oponent, piece, king.location, board, undefined, specialMove).valid) {
             check = { result: true, piece}
         }
     })
@@ -83,7 +83,7 @@ export const isCheck = (oponent, board) => {
 
 
 // Defines wheter the movement is valid or not
-export const movementIsValid = (turn, piece, targetLocation, board, checkState) => {
+export const movementIsValid = (turn, piece, targetLocation, board, checkState, specialMove) => {
     // Check if the piece belongs to the player's turn
     if (piece.player !== turn) {
         return { valid: false, error: "Can't move oponent's pieces!" }
@@ -101,14 +101,14 @@ export const movementIsValid = (turn, piece, targetLocation, board, checkState) 
     // if there is an oponent's player piece it is a capture movement
     let validMoveResult
     if (targetPiece && targetPiece.player !== piece.player) {
-        validMoveResult = piece.validCaptureMovement(targetLocation, board)
+        validMoveResult = piece.validCaptureMovement(targetLocation, board, specialMove)
         if (!validMoveResult.result) {
             return { valid: false, error: 'Invalid capture movement' }
         }
     }
     // if the target cell is empty it is a simple movement
     if (targetPiece === null) {
-        validMoveResult = piece.validMovement(targetLocation, board)
+        validMoveResult = piece.validMovement(targetLocation, board, specialMove)
         if (!validMoveResult.result) {
             return { valid: false, error: 'Invalid movement' }
         }
@@ -117,7 +117,7 @@ export const movementIsValid = (turn, piece, targetLocation, board, checkState) 
     // if player is in check the movement must eliminates the check
     if (checkState=== turn) {
         // make hypothetical movement
-        const hBoard = makeHypotheticalMove(board, piece, targetLocation)
+        const hBoard = makeHypotheticalMove(board, piece, targetLocation, validMoveResult.special)
 
         // check if movement eliminates the check
         // if doesn't the movement is invalid
@@ -150,7 +150,7 @@ export const cloneBoard = (board) => {
 }
 
 // make a hypothetical movement
-const makeHypotheticalMove = (board, piece, targetLocation) => {
+const makeHypotheticalMove = (board, piece, targetLocation, specialMove) => {
     const hBoard = cloneBoard(board)
     const clonePiece = hBoard[piece.location.row][piece.location.column]
     const oldLocation = clonePiece.location
@@ -158,10 +158,16 @@ const makeHypotheticalMove = (board, piece, targetLocation) => {
     hBoard[targetLocation.row][targetLocation.column] = clonePiece
     hBoard[oldLocation.row][oldLocation.column] = null
 
+    // Check if it is the en passant special movement
+    if (specialMove && specialMove.name === 'en passant done') {
+        console.log('transfer en passant is working')
+        hBoard[specialMove.captured.row][specialMove.captured.column] = null
+    }
+
     return hBoard
 }
 
-export const isCheckMate = (turn, board) => {
+export const isCheckMate = (turn, board, specialMove) => {
     // find all the pieces of the player
     const pieces = findPlayersPieces(turn, board)
     // Find all possible movements
@@ -176,7 +182,7 @@ export const isCheckMate = (turn, board) => {
         // iterate over every possible move
         const possibleMovements = moves[j].moves
         for (let i=0 ; i< possibleMovements.length; i++) {
-            const validMove = movementIsValid(turn, moves[j].piece, possibleMovements[i], board, turn).valid
+            const validMove = movementIsValid(turn, moves[j].piece, possibleMovements[i], board, turn, specialMove).valid
             if (validMove) {
                 return { result: false, move: [possibleMovements[i], moves[j].piece.location]}
             }

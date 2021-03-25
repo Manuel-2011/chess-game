@@ -52,3 +52,10 @@ export const enableEnPassant = (specialMove) => {
         payload: specialMove
     }
 }
+
+export const enPassant = (piece) => {
+    return {
+        type: 'EN PASSANT',
+        payload: piece.location
+    }
+}
