@@ -93,13 +93,22 @@ export const movementIsValid = (turn, piece, targetLocation, board, checkState, 
     const targetRow = targetLocation.row
     const targetColumn = targetLocation.column
     const targetPiece = board[targetRow][targetColumn]
+    
+    let validMoveResult
+
+    // Check if it is a valid castling move
+    const castling = isCastling(piece, targetPiece, board, checkState)
+    if (castling.result) {
+        validMoveResult = { valid: true, special: castling }
+    }
+
     // if in the target location is a piece from the same player the movement 
-    // is invalid
-    if (targetPiece && targetPiece.player === piece.player) {
+    // is invalid, at least it is a castling movement
+    if (targetPiece && targetPiece.player === piece.player && !validMoveResult) {
         return { valid: false, error: 'The cell is occupied' }
     }
+
     // if there is an oponent's player piece it is a capture movement
-    let validMoveResult
     if (targetPiece && targetPiece.player !== piece.player) {
         validMoveResult = piece.validCaptureMovement(targetLocation, board, specialMove)
         if (!validMoveResult.result) {
@@ -159,7 +168,29 @@ export const cloneBoard = (board) => {
 
 // make a hypothetical movement
 const makeHypotheticalMove = (board, piece, targetLocation, specialMove) => {
+
     const hBoard = cloneBoard(board)
+
+    // Check if it is a castling move
+    if (specialMove && specialMove.name === 'castling') {
+        const king = hBoard[piece.location.row][piece.location.column]
+        const rook = hBoard[targetLocation.row][targetLocation.column]
+
+        // Update location in the pieces
+        king.location = specialMove.kingNewLocation
+        rook.location = specialMove.rookNewLocation
+
+        // Pieces in the new location
+        hBoard[specialMove.kingNewLocation.row][specialMove.kingNewLocation.column] = king
+        hBoard[specialMove.rookNewLocation.row][specialMove.rookNewLocation.column] = rook
+
+        // Erase old locations
+        hBoard[piece.location.row][piece.location.column] = null
+        hBoard[targetLocation.row][targetLocation.column] = null
+
+        return hBoard
+    } 
+   
     const clonePiece = hBoard[piece.location.row][piece.location.column]
     const oldLocation = clonePiece.location
     clonePiece.location = {row: targetLocation.row, column: targetLocation.column}
@@ -168,7 +199,6 @@ const makeHypotheticalMove = (board, piece, targetLocation, specialMove) => {
 
     // Check if it is the en passant special movement
     if (specialMove && specialMove.name === 'en passant done') {
-        console.log('transfer en passant is working')
         hBoard[specialMove.captured.row][specialMove.captured.column] = null
     }
 
@@ -264,4 +294,48 @@ const findPlayersPieces = (player, board) => {
     })
 
     return pieces
+}
+
+const isCastling = (piece, targetPiece, board, checkState) => {
+    // King can't be in check
+    if (checkState !== '') {
+        return { result: false }
+    }
+
+    // Check if the piece is the king and the targetPiece in the rook and belong to the same player
+    if (piece.name !== 'king' || targetPiece.name !== 'rook' || piece.player !== targetPiece.player) {
+        return { result: false }
+    }
+
+    // This must be the first move for the king and the rook
+    if (piece.history.length > 0 || targetPiece.history.length > 0) {
+        return { result: false }
+    }
+
+    // There can't be any piece in the middle
+    if (isJumping(piece.location, targetPiece.location, board)) {
+        return { result: false }
+    }
+
+    // If all above tests are passed the move is valid
+    
+    // Direction of the rook
+    let direction = targetPiece.location.column < piece.location.column ? 'left' : 'right'
+    // king moves two steps towards the rook
+    let columnOffset = direction === 'left' ? -2 : 2
+    // king new location
+    let kingNewLocation = { row: piece.location.row, column: piece.location.column + columnOffset}
+
+    // Rook will be position next to the king but on the opposite side
+    columnOffset = direction === 'left' ? 1 : -1
+    let rookNewLocation = { row: kingNewLocation.row, column: kingNewLocation.column + columnOffset}
+
+    return {
+        result: true,
+        name: 'castling',
+        king: piece,
+        rook: targetPiece,
+        kingNewLocation,
+        rookNewLocation
+    }
 }

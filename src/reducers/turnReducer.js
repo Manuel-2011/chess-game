@@ -1,5 +1,5 @@
 const turnReducer = (turn = 'white', action) => {
-    if (action.type === 'MOVEMENT') {
+    if (action.type === 'MOVEMENT' || action.type === 'CASTLING') {
         turn = turn === 'white' ? 'black' : 'white'
     }
 

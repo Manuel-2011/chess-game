@@ -59,3 +59,10 @@ export const enPassant = (piece) => {
         payload: piece.location
     }
 }
+
+export const castling = (specialMove) => {
+    return {
+        type: 'CASTLING',
+        payload: specialMove
+    }
+}

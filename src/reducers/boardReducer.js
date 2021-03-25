@@ -37,6 +37,27 @@ const boardReducer = (board = initialBoard, action) => {
         return finalBoard
     }
 
+    if (action.type === 'CASTLING') {
+        finalBoard = board.slice()
+
+        const king = action.payload.king
+        const rook = action.payload.rook
+
+        // Erase old locations
+        finalBoard[king.location.row][king.location.column] = null
+        finalBoard[rook.location.row][rook.location.column] = null
+
+        // Update location in the pieces
+        king.location = action.payload.kingNewLocation
+        rook.location = action.payload.rookNewLocation
+
+        // Pieces in the new location
+        finalBoard[king.location.row][king.location.column] = king
+        finalBoard[rook.location.row][rook.location.column] = rook
+
+        return finalBoard
+    }
+
     return finalBoard
 }
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import './chessBoard.css'
 import Cell from './Cell'
-import { movePiece, check, checkmate, newMessage, newHint, enableEnPassant, enPassant } from '../actions'
+import { movePiece, check, checkmate, newMessage, newHint, enableEnPassant, enPassant, castling } from '../actions'
 import { isCheck, movementIsValid, isCheckMate } from '../utils/chessLogic'
 
 const ChessBoard = (props) => {
@@ -13,6 +13,17 @@ const ChessBoard = (props) => {
     const onCellClick = (targetLocation) => {
         const valid = movementIsValid(props.turn, selectedPiece, targetLocation, props.board, props.inCheck, props.specialMove)
         if (valid.valid) {
+            if (valid.special && valid.special.name === 'castling') {
+                props.castling(valid.special)
+                setTimeout(() => {
+                    props.newMessage({ 
+                        type: 'success', 
+                        text: '"Castling" move!'
+                    })
+                }, 200)
+                return 
+            }
+            
             // If movement is valid send the action with the move
             props.movePiece(selectedPiece, targetLocation, props.board)
 
@@ -117,5 +128,6 @@ export default connect(mapStateToProps, {
         newMessage,
         newHint,
         enableEnPassant,
-        enPassant
+        enPassant,
+        castling
     })(ChessBoard)
