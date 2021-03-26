@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import './sidebar.css'
 import { restartGame, checkmate, activeHint } from '../actions'
 
+import SpecialMoves from './SpecialMoves'
+
 const Sidebar = (props) => {
+    const [specialMovesWindow, setSpecialMovesWindow] = useState(false)
+
     let hintButton
     if (props.inCheck) {
         hintButton = (
@@ -27,6 +31,11 @@ const Sidebar = (props) => {
                 onClick={props.restartGame}
                 >Restart Game</button>
 
+                <button 
+                className="sidebar__btn"
+                onClick={() => setSpecialMovesWindow(true)}
+                >Special Moves</button>
+
                 {props.inCheckmate ==='' && 
                 <React.Fragment>
                     <button 
@@ -36,6 +45,11 @@ const Sidebar = (props) => {
                     {hintButton}
                 </React.Fragment>}  
             </div>
+
+            { specialMovesWindow && 
+            <SpecialMoves windowState={specialMovesWindow}
+                changeWindowState={setSpecialMovesWindow}
+            />}
         </div>
     )
 }
