@@ -41,4 +41,4 @@ function App(props) {
   );
 }
 
-export default connect(() => {}, { newMessage })(App);
+export default connect(() => ({}), { newMessage })(App);

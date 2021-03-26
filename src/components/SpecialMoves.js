@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ReactDom from 'react-dom'
 import './specialMoves.css'
 
@@ -38,7 +38,7 @@ const SpecialMoves = ({ windowState, changeWindowState }) => {
                     <p className="special-section__text">
                     One other special chess rule is called castling. This move allows you to do two important things all in one move: get your king to safety (hopefully), and get your rook out of the corner and into the game. On a player's turn he may move his king two squares over to one side and then move the rook from that side's corner to right next to the king on the opposite side. (See the example below.) However, in order to castle, the following conditions must be met:
                     </p>
-                    <p className="special-section__text">
+                    <div className="special-section__text">
                         <ul>
                             <li>
                             it must be that king's very first move
@@ -53,7 +53,7 @@ const SpecialMoves = ({ windowState, changeWindowState }) => {
                             the king may not be in check or pass through check  
                             </li>
                         </ul>
-                    </p>
+                    </div>
                     <div className="special-section__imgs-box">
                         <img className="special-section__img" src="/img/castling1.jpg" alt="Castling first move"/>
                         <img className="special-section__img" src="/img/castling2.jpg" alt="Castling second move"/>

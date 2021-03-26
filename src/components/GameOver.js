@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 import { connect } from 'react-redux'
 import './gameOver.css'
@@ -29,7 +29,7 @@ const GameOver = (props) => {
     return ReactDom.createPortal(
         (<div className="game-over__background" onClick={closeWindow}>
             <div className="game-over__box">
-                <img src="/img/winner.png" alt="winner image" className="game-over__img" />
+                <img src="/img/winner.png" alt="winner" className="game-over__img" />
                 <div className="game-over__text">
                     Player {winner} wins!
                 </div>
