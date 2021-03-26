@@ -34,7 +34,7 @@ function App(props) {
         <BackgroundFigures />
       </div>
       <div className="footer">
-        &copy; <a className="footer__link" href="https://github.com/Manuel-2011" target="_blank">Manuel Mosquera</a> - All Rights Reserved
+        &copy; <a className="footer__link" href="https://github.com/Manuel-2011" target="_blank" rel="noreferrer">Manuel Mosquera</a> - All Rights Reserved
       </div>
       
       <Message />
