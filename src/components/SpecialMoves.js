@@ -15,6 +15,8 @@ const SpecialMoves = ({ windowState, changeWindowState }) => {
     return ReactDom.createPortal(
         (<div className="special__background" onClick={closeWindow}>
             <div className="special__box" onClick={(e) => e.stopPropagation()}>
+                <div className="special__close-action" onClick={closeWindow}>&times;</div>
+
                 <h2 className="special__primary-header">Special Chess Moves</h2>
 
                 <section className="special-section">

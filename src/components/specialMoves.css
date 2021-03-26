@@ -16,6 +16,7 @@
     width: 70%;
     height: 70vh;
     overflow-y: scroll;
+    color: #292929;
 
     background-color: #fff;
     padding: 50px 20px;
@@ -26,6 +27,14 @@
 
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, .8);
+}
+
+.special__close-action {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 50px;
+    cursor: pointer;
 }
 
 .special__primary-header {
