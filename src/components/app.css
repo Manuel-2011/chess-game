@@ -46,3 +46,19 @@ body {
     -webkit-background-clip: text;
     color: transparent;
 }
+
+.footer {
+    text-align: center;
+}
+
+.footer__link:link,
+.footer__link:visited {
+    font-family: inherit;
+    color: #000;
+    transition: all .2s;
+} 
+
+.footer__link:hover {
+    color: #fff;
+    background-color: #000;
+}
