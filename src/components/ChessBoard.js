@@ -5,20 +5,22 @@ import Cell from './Cell'
 import { movePiece, check, checkmate, newMessage, newHint, enableEnPassant, enPassant, castling, enablePromotion, promotionWindow } from '../actions'
 import { isCheck, movementIsValid, isCheckMate } from '../utils/chessLogic'
 
-const ChessBoard = (props) => {
+const ChessBoard = ({ board, turn, inCheck, inCheckmate, hint, specialMove, 
+    movePiece, check, checkmate, newMessage, newHint, enableEnPassant, enPassant, 
+    castling, enablePromotion, promotionWindow}) => {
 
     const [selectedPiece, setSelectedPiece] = useState(undefined)
 
     // Select a piece to move or select where you want to move the piece
     const onCellClick = (targetLocation) => {
-        const valid = movementIsValid(props.turn, selectedPiece, targetLocation, props.board, props.inCheck, props.specialMove)
+        const valid = movementIsValid(turn, selectedPiece, targetLocation, board, inCheck, specialMove)
         if (valid.valid) {
 
             // Check if it is a castling movement
             if (valid.special && valid.special.name === 'castling') {
-                props.castling(valid.special)
+                castling(valid.special)
                 setTimeout(() => {
-                    props.newMessage({ 
+                    newMessage({ 
                         type: 'success', 
                         text: '"Castling" move!'
                     })
@@ -27,23 +29,23 @@ const ChessBoard = (props) => {
             }
             
             // If movement is valid send the action with the move
-            props.movePiece(selectedPiece, targetLocation, props.board)
+            movePiece(selectedPiece, targetLocation, board)
 
             // Check if the move enables pawn promotion
             if (valid.special && valid.special.name === 'promote pawn') {
-                props.enablePromotion(valid.special)
+                enablePromotion(valid.special)
             }
 
             // Check if this movement makes possible en passant move
             if (valid.special && valid.special.name === 'en passant') {
-                props.enableEnPassant(valid.special)
+                enableEnPassant(valid.special)
             }
 
             // check if special movement en passant is done
             if (valid.special && valid.special.name === 'en passant done') {
-                props.enPassant(props.specialMove.enPassant.piece)
+                enPassant(specialMove.enPassant.piece)
                 setTimeout(() => {
-                    props.newMessage({ 
+                    newMessage({ 
                         type: 'success', 
                         text: '"En passant" move!'
                     })
@@ -52,35 +54,35 @@ const ChessBoard = (props) => {
             return
         }
 
-        props.newMessage({ type: 'error', text: valid.error })
+        newMessage({ type: 'error', text: valid.error })
     }
 
     useEffect(() => {
         // Check if there is a check
-        const oponent = props.turn === 'white' ? 'black' : 'white'
-        if (isCheck(oponent, props.board, props.specialMove).result) {
+        const oponent = turn === 'white' ? 'black' : 'white'
+        if (isCheck(oponent, board, specialMove).result) {
 
             // Is it a check mate?
-            const checkmate = isCheckMate(props.turn, props.board, props.specialMove)
-            if (checkmate.result) {
-                props.checkmate(props.turn)
-                props.check(props.turn)
+            const checkmateResult = isCheckMate(turn, board, specialMove)
+            if (checkmateResult.result) {
+                checkmate(turn)
+                check(turn)
             } else {
-                props.check(props.turn)
-                props.newHint(checkmate.move)
+                check(turn)
+                newHint(checkmateResult.move)
                 setTimeout(() => {
-                    props.newMessage({ 
+                    newMessage({ 
                         type: 'info', 
-                        text: `The ${props.turn} player is in check! You can use a hint if you want.` 
+                        text: `The ${turn} player is in check! You can use a hint if you want.` 
                     })
                 }, 200)
             }
         }
-    }, [props])
+    }, [board, check, checkmate, newHint, newMessage, specialMove, turn])
 
     const renderBoard = () => {
         // Iterate for each row
-        return props.board.map((row, rowNumber) => {
+        return board.map((row, rowNumber) => {
 
             // Iterrate for each column to create the cells
             const renderCells = row.map((cell, columnNumber) => {
@@ -88,7 +90,7 @@ const ChessBoard = (props) => {
                 // if it is even the cell will be black
                 let color = (rowNumber + columnNumber) % 2 === 0 ? 'white' : 'black'
                 return <Cell 
-                            turn={props.turn}
+                            turn={turn}
                             color={color} 
                             row={rowNumber} 
                             column={columnNumber} 
@@ -97,10 +99,10 @@ const ChessBoard = (props) => {
                             onClick={onCellClick}
                             selectedPiece={selectedPiece}
                             setSelectedPiece={setSelectedPiece}
-                            hint={props.hint}
-                            specialMove={props.specialMove}
-                            showPromotionWindow={props.promotionWindow}
-                            inCheckmate={props.inCheckmate}
+                            hint={hint}
+                            specialMove={specialMove}
+                            showPromotionWindow={promotionWindow}
+                            inCheckmate={inCheckmate}
                         />
             })
 
