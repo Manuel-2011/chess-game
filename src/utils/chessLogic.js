@@ -71,11 +71,13 @@ export const isCheck = (oponent, board, specialMove) => {
 
     // Check if any of the oponent's pieces is threating the king
     let check = { result: false }
-    oponentPieces.forEach(piece => {
-        if (movementIsValid(oponent, piece, king.location, board, undefined, specialMove).valid) {
-            check = { result: true, piece}
-        }
-    })
+    if (king) {
+        oponentPieces.forEach(piece => {
+            if (movementIsValid(oponent, piece, king.location, board, undefined, specialMove).valid) {
+                check = { result: true, piece}
+            }
+        })
+    }
 
     return check
 }
@@ -303,7 +305,7 @@ const isCastling = (piece, targetPiece, board, checkState) => {
     }
 
     // Check if the piece is the king and the targetPiece in the rook and belong to the same player
-    if (piece.name !== 'king' || targetPiece.name !== 'rook' || piece.player !== targetPiece.player) {
+    if (piece.name !== 'king' || !targetPiece || targetPiece.name !== 'rook' || piece.player !== targetPiece.player) {
         return { result: false }
     }
 

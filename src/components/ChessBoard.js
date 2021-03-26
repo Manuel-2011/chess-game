@@ -76,7 +76,7 @@ const ChessBoard = ({ board, turn, inCheck, inCheckmate, hint, specialMove,
                         text: `The ${turn} player is in check! You can use a hint if you want.` 
                     })
                 }, 200)
-            }
+            }         
         }
     }, [board, check, checkmate, newHint, newMessage, specialMove, turn])
 
