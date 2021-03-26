@@ -76,7 +76,7 @@ const ChessBoard = (props) => {
                 }, 200)
             }
         }
-    }, [props.board])
+    }, [props])
 
     const renderBoard = () => {
         // Iterate for each row

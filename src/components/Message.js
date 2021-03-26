@@ -4,12 +4,11 @@ import { connect } from 'react-redux'
 import { newMessage } from '../actions'
 import './message.css'
 
-const Message = (props) => {
-    let message = props.message
+const Message = ({ turn, message, newMessage }) => {
 
     useEffect(() => {
-        message = props.newMessage({})
-    }, [props.turn])
+        newMessage({})
+    }, [turn, newMessage])
 
     if (!message.text) {
         return null

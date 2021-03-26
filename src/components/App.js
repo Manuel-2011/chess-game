@@ -15,7 +15,7 @@ function App(props) {
       type: 'success', 
       text: 'Welcome to the Chess Game! to play select a piece and then select the cell where you want to move it.'
     })
-  }, [])
+  }, [props])
 
   return (
     <div className="App">
