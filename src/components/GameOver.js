@@ -3,6 +3,7 @@ import ReactDom from 'react-dom'
 import { connect } from 'react-redux'
 import './gameOver.css'
 import { restartGame, newMessage } from '../actions'
+import winnerImg from '../img/winner.png'
 
 const GameOver = (props) => {
     const [activeWindow, setActiveWindow] = useState(true)
@@ -29,7 +30,7 @@ const GameOver = (props) => {
     return ReactDom.createPortal(
         (<div className="game-over__background" onClick={closeWindow}>
             <div className="game-over__box">
-                <img src="/img/winner.png" alt="winner" className="game-over__img" />
+                <img src={winnerImg} alt="winner" className="game-over__img" />
                 <div className="game-over__text">
                     Player {winner} wins!
                 </div>
